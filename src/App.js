@@ -17,7 +17,7 @@ export default function App() {
     }
     axios
       .get(
-        `http://192.168.86.10:81/api/projects-work-logs?start_date=${start}&end_date=${start}`
+        `http://192.168.86.10:81/api/projects-work-logs?start_date=${start}&end_date=2023-01-30`
         , config
       )
       .then((res) => {
@@ -75,7 +75,7 @@ export default function App() {
                   return (
                     <>
                       <tr>
-                        <td rowspan={task.worklogs.length + 1}>{task.title}</td>
+                        <td rowspan={task.worklogs.length + 1}>{task.id}--{task.code}--{task.title}</td>
                       </tr>
                       {task.worklogs.map((worklog) => {
                         return (
