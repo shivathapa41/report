@@ -5,7 +5,8 @@ export default function App() {
 
   const [api, setApi] = useState()
   const [token, setToken] = useState()
-  const [start, setStart] = useState();
+  const [startDate, setStartDate] = useState('2023-01-04')
+  const [endDate, setEndDate] = useState()
   const [loading, setLoading] = useState()
 
   const callApi = () => {
@@ -17,7 +18,7 @@ export default function App() {
     }
     axios
       .get(
-        `http://192.168.86.10:81/api/projects-work-logs?start_date=${start}&end_date=2023-01-30`
+        `http://192.168.86.10:81/api/projects-work-logs?start_date=${startDate}&end_date=${startDate}`
         , config
       )
       .then((res) => {
@@ -52,53 +53,63 @@ export default function App() {
   }
   return (
     <>
-      <h5> Token</h5>
-      <input type="text" value={token} onChange={(e) => setToken(e.target.value)}></input>
-      <h5> Date</h5>
-      <input type="text" value={start} onChange={(e) => setStart(e.target.value)}></input>
-      <br />
-      <button className="btn btn-primary" onClick={callApi} >Click</button>
-      {api?.map((projects) => {
-        return (
-          <>
-            <h4>{projects.title}</h4>
-            <table class="table mb-5">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">Tasks</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {projects.tasks.map((task) => {
-                  return (
-                    <>
-                      <tr>
-                        <td rowspan={task.worklogs.length + 1}>{task.id}--{task.code}--{task.title}</td>
-                      </tr>
-                      {task.worklogs.map((worklog) => {
-                        return (
-                          <tr>
-                            <td rowspan="1">{worklog.date}</td>
-                            <td rowspan="1" calculate={add(worklog.duration)}>
-                              {worklog.duration / 60}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </>
-                  );
-                })}
-              </tbody>
-            </table>
-          </>
-        );
-      })}
-      <h1>Total Logged: {timeConvert(sum)}</h1>
+      <div className="container">
+        <div className="form-container">
+          <div className="form-group">
+          <label>Token</label>
+          <textarea type="text" rows={6} value={token} onChange={(e) => setToken(e.target.value)}></textarea>
+          </div>
+          <div className="form-group">
+          <label>Start Date</label>
+          <input type="text" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input>
+          </div>
+          {/* <div className="form-group">
+          <label>End Date</label>
+          <input type="text" value={endDate} onChange={(e) => setEndDate(e.target.value)}></input>
+          </div> */}
+          <button className="btn btn-primary" onClick={callApi} >Click</button>
+        </div>
+      
+        {api?.map((projects) => {
+          return (
+            <>
+              <h4 className="title">{projects.title}</h4>
+              <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Tasks</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {projects.tasks.map((task) => {
+                    return (
+                      <>
+                        <tr>
+                          <td rowspan={task.worklogs.length + 1}>{task.code} : {task.title}</td>
+                        </tr>
+                        {task.worklogs.map((worklog) => {
+                          return (
+                            <tr>
+                              <td className="date" rowspan="1">{worklog.date}</td>
+                              <td className="time" rowspan="1" calculate={add(worklog.duration)}>
+                                {worklog.duration / 60}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          );
+        })}
+
+        <h3>Total Logged: {timeConvert(sum)}</h3>
+      </div>
     </>
   );
 }
-
-
-
