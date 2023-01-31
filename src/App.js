@@ -10,6 +10,7 @@ export default function App() {
   const [loading, setLoading] = useState()
 
   const callApi = () => {
+  
     setLoading(true)
     let config = {
       headers: {
@@ -61,7 +62,7 @@ export default function App() {
           </div>
           <div className="form-group">
           <label>Start Date</label>
-          <input type="text" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input>
+          <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input>
           </div>
           {/* <div className="form-group">
           <label>End Date</label>
